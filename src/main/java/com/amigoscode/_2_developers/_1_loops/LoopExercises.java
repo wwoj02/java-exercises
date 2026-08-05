@@ -2,7 +2,7 @@ package com.amigoscode._2_developers._1_loops;
 
 /**
  * Loop Exercises
- *
+ * <p>
  * Practice nested loops, break/continue statements, labeled breaks,
  * accumulators, pattern printing, reverse iteration, and controlled infinite loops.
  */
@@ -11,9 +11,9 @@ public class LoopExercises {
     /**
      * Prints a multiplication table from 1 to n using nested loops.
      * Example for n=3:
-     *   1  2  3
-     *   2  4  6
-     *   3  6  9
+     * 1  2  3
+     * 2  4  6
+     * 3  6  9
      *
      * @param n the size of the multiplication table
      */
@@ -21,6 +21,12 @@ public class LoopExercises {
         // TODO: 1 - Use nested for loops to print an n x n multiplication table.
         //  Outer loop iterates rows 1..n, inner loop iterates columns 1..n.
         //  Print each product followed by a tab, and a newline after each row.
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                System.out.print(i * j + "\t");
+            }
+            System.out.println();
+        }
 
     }
 
@@ -32,10 +38,14 @@ public class LoopExercises {
      * @return the accumulated sum following the rules above
      */
     public static int sumWithSkipAndStop(int n) {
-        int sum = 0;
         // TODO: 2 - Loop from 1 to n. Use 'continue' to skip multiples of 3.
         //  Use 'break' to stop if sum exceeds 100. Add the current number to sum otherwise.
-
+        int sum = 0;
+        for (int i = 1; i <= n; i++) {
+            if (sum > 100) break;
+            if (i % 3 == 0) continue;
+            sum += i;
+        }
         return sum;
     }
 
@@ -48,12 +58,20 @@ public class LoopExercises {
      * @return description of where the target was found, or "Not found"
      */
     public static String findInMatrix(int[][] matrix, int target) {
-        String result = "Not found";
         // TODO: 3 - Define a label (e.g., 'search:') before the outer loop.
         //  Use nested loops to iterate through the matrix.
         //  When the target is found, set result to "Found at [row][col]" and
         //  use 'break search;' to exit both loops.
-
+        String result = "Not found";
+        search:
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                if (matrix[i][j] == target) {
+                    result = String.format("Found at [%d][%d]", i, j);
+                    break search;
+                }
+            }
+        }
         return result;
     }
 
@@ -65,20 +83,22 @@ public class LoopExercises {
      * @return n!
      */
     public static long factorial(int n) {
-        long accumulator = 1;
         // TODO: 4 - Use a for loop from 1 to n (inclusive), multiplying accumulator
         //  by the loop variable each iteration. Return the result.
-
+        long accumulator = 1;
+        for (int i = 1; i <= n; i++) {
+            accumulator *= i;
+        }
         return accumulator;
     }
 
     /**
      * Prints a pyramid pattern of stars with the given number of rows.
      * Example for rows=4:
-     *       *
-     *      ***
-     *     *****
-     *    *******
+     * *
+     * ***
+     * *****
+     * *******
      *
      * @param rows the number of rows in the pyramid
      */
@@ -86,7 +106,10 @@ public class LoopExercises {
         // TODO: 5 - Use nested loops to print a centered pyramid of stars.
         //  For each row i (0-based), print (rows - i - 1) spaces followed by (2 * i + 1) stars.
         //  Print a newline after each row.
-
+        for (int i = 0; i < rows; i++) {
+            System.out.print(" ".repeat(rows - i - 1));
+            System.out.println("*".repeat(2 * i + 1));
+        }
     }
 
     /**
@@ -97,10 +120,16 @@ public class LoopExercises {
      * @return a string with elements in reverse, separated by ", "
      */
     public static String iterateBackwards(int[] arr) {
-        StringBuilder sb = new StringBuilder();
         // TODO: 6 - Use a for loop starting from the last index down to 0.
         //  Append each element to sb. Add ", " between elements but not after the last one.
-
+        StringBuilder sb = new StringBuilder();
+        for (int i = arr.length - 1; i >= 0; i--) {
+            if (i == 0) {
+                sb.append(arr[i]);
+                break;
+            }
+            sb.append(arr[i] + ", ");
+        }
         return sb.toString();
     }
 
@@ -113,12 +142,15 @@ public class LoopExercises {
      * @return the number of iterations before the target was generated
      */
     public static int countUntilMatch(int target) {
-        int attempts = 0;
-        java.util.Random random = new java.util.Random();
         // TODO: 7 - Use while(true) to create an infinite loop.
         //  Each iteration: increment attempts, generate a random int between 1 and 100,
         //  and break if it matches the target.
-
+        int attempts = 0;
+        java.util.Random random = new java.util.Random();
+        while(true) {
+            attempts++;
+            if (random.nextInt(100) + 1 == target) break;
+        }
         return attempts;
     }
 
