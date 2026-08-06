@@ -14,31 +14,42 @@ public class TypeCasting {
         // TODO: 1 - Widen an int to a double (implicit casting)
         // Declare an int variable with any value, then assign it to a double variable.
         // Print both variables to see the result.
-
+        int intNumber = 5;
+        double doubleNumber = intNumber;
+        System.out.println(intNumber);
+        System.out.println(doubleNumber);
 
         // TODO: 2 - Narrow a double to an int (explicit casting)
         // Declare a double variable (e.g., 9.78), then cast it to an int.
         // Print both variables to see what happens to the decimal part.
+        double doubleNumber2 = 9.78;
+        int intNumber2 = (int) doubleNumber2;
 
+        System.out.println(doubleNumber2);
+        System.out.println(intNumber2);
 
         // TODO: 3 - Cast an int to a char to get the character it represents
         // Hint: int value 65 corresponds to 'A' in ASCII
         // Print the resulting char.
-
+        int value = 65;
+        System.out.println((char) value);
 
         // TODO: 4 - Cast a char to an int to get its ASCII value
         // Hint: char 'Z' has an ASCII value of 90
         // Print the resulting int.
-
+        char letter = 'Z';
+        System.out.println((int) letter);
 
         // TODO: 5 - Convert a String "42" to an int using Integer.parseInt()
         // Declare a String variable with the value "42", then parse it to an int.
         // Print the result.
-
+        String stringNumber = "42";
+        System.out.println(Integer.parseInt(stringNumber));
 
         // TODO: 6 - Convert an int 42 to a String using String.valueOf()
         // Declare an int variable with the value 42, then convert it to a String.
         // Print the result.
-
+        int number42 = 42;
+        System.out.println(String.valueOf(number42));
     }
 }
