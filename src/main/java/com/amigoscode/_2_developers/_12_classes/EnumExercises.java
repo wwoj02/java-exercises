@@ -13,7 +13,6 @@ public class EnumExercises {
     //  SPRING, SUMMER, AUTUMN, WINTER
     //  For now, just declare them without any fields or methods.
 
-
     // TODO: 2 - Modify the Season enum to add:
     //  - A private final String 'description' field
     //  - A constructor that takes a String description and assigns it
@@ -42,6 +41,15 @@ public class EnumExercises {
         //  For each season, print a message like "Spring: Flowers bloom"
         //  using the getDescription() method.
         //  Test with Season.SUMMER.
+        Season season = Season.SUMMER;
+        String result = switch(season) {
+            case SPRING -> Season.SPRING + " " + season.getDescription();
+            case SUMMER -> Season.SUMMER + " " + season.getDescription();
+            case AUTUMN -> Season.AUTUMN + " " + season.getDescription();
+            case WINTER -> Season.WINTER + " " + season.getDescription();
+        };
+
+        System.out.println(result);
 
 
         System.out.println("\n=== Iterate Over Enum Values ===");
@@ -50,5 +58,12 @@ public class EnumExercises {
         //  Example output: "0: SPRING - Flowers bloom"
         //  Also iterate over Priority.values() and print each with its level.
 
+        for (Season s : Season.values()) {
+            System.out.println(s.ordinal() + " " + s + " " + s.getDescription());
+        }
+
+        for (Priority p : Priority.values()) {
+            System.out.println(p + " " + p.getLevel());
+        }
     }
 }
