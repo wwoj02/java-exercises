@@ -29,36 +29,64 @@ public class FindAndMatch {
 
         // TODO: 1 - Use findFirst() to find the first number greater than 7 in 'numbers'
         //           Print the result
+        int result = numbers.stream()
+                .filter(n -> n > 7)
+                .findFirst()
+                .orElse(-1);
+        System.out.println(result);
 
 
         // TODO: 2 - Use findAny() on a parallel stream of 'names' to find any name
         //           starting with a vowel (A, E, I, O, U)
         //           Print the result (may vary between runs due to parallelism)
-
+        String nameStartsWithVowel = names.parallelStream().filter(
+                n -> n.startsWith("A") || n.startsWith("E") ||
+                n.startsWith("I") || n.startsWith("O") || n.startsWith("U"))
+                .findAny()
+                .orElse("-1");
+        System.out.println(nameStartsWithVowel);
 
         // TODO: 3 - Use allMatch() to check if all elements in 'evenNumbers' are even
         //           Print true or false
-
+        boolean isAllEven = evenNumbers.stream()
+                .allMatch(n -> n % 2 == 0);
+        System.out.println(isAllEven);
 
         // TODO: 4 - Use anyMatch() to check if at least one product in 'products'
         //           has a price over 500
         //           Print true or false
-
+        boolean priceOver500 = products.stream()
+                .anyMatch(product -> product.price() > 500);
+        System.out.println(priceOver500);
 
         // TODO: 5 - Use noneMatch() to check that no product in 'products'
         //           has a negative price
         //           Print true or false
-
+        boolean noneMatch = products.stream()
+                .noneMatch(product -> product.price() < 0.0);
+        System.out.println(noneMatch);
 
         // TODO: 6 - Handle the Optional from findFirst() properly:
         //           Find the first product in "Furniture" category
         //           Use ifPresentOrElse to print the product name or "Not found"
+        products.stream()
+                .filter(p -> p.category().equals("Furniture"))
+                .findFirst()
+                .map(Product::name)
+                .ifPresentOrElse(System.out::println, () -> System.out.println("Not found"));
 
 
         // TODO: 7 - Combine filter + findFirst to search for a specific product:
         //           Find the first product with price between 100 and 300
         //           Use map to extract just the name, then orElse("Not found")
         //           Print the result
+        String name = products.stream()
+                .filter(product -> product.price() > 100 && product.price() < 300)
+                .findFirst()
+                .map(Product::name)
+                .orElse("Not found");
+
+        System.out.println(name);
 
     }
 }
