@@ -29,28 +29,43 @@ public class JoiningExercise {
         // TODO: 1 - Join 'fruits' with a comma and space separator: ", "
         //           Use Collectors.joining(", ")
         //           Print the result (should be: "Apple, Banana, Cherry, Date, Elderberry")
+        String TODO1 = fruits.stream().collect(Collectors.joining(", "));
+        System.out.println(TODO1);
 
 
         // TODO: 2 - Join 'fruits' with comma separator, and add prefix "[" and suffix "]"
         //           Use Collectors.joining(", ", "[", "]")
         //           Print the result (should be: "[Apple, Banana, Cherry, Date, Elderberry]")
+        String TODO2 = fruits.stream().collect(Collectors.joining(", ", "[", "]"));
+        System.out.println(TODO2);
 
 
         // TODO: 3 - Join full names from 'people' (firstName + " " + lastName)
         //           with " | " separator
         //           Map each Person to their full name first, then join
         //           Print the result
-
+        String TODO3 = people.stream()
+                .map(person -> person.firstName() + " " + person.lastName())
+                .collect(Collectors.joining(" | "));
+        System.out.println(TODO3);
 
         // TODO: 4 - Join 'fruits' with a newline separator "\n"
         //           This creates a multi-line string with each fruit on its own line
         //           Print the result
+        String TODO4 = fruits.stream()
+                .collect(Collectors.joining("\n"));
+        System.out.println(TODO4);
 
 
         // TODO: 5 - Build a CSV line: join the 'values' list with comma separator
         //           Then do the same for 'headers'
         //           Print the header line first, then the values line
         //           This simulates writing a simple CSV output
+        String TODO5values = values.stream().collect(Collectors.joining(","));
+        String TODO5headers = headers.stream().collect(Collectors.joining(","));
+
+        System.out.println(TODO5headers);
+        System.out.println(TODO5values);
 
     }
 }
