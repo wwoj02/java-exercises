@@ -1,7 +1,6 @@
 package com.amigoscode._7_streams._6_transformations;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Exercise: Map Transformations
@@ -40,28 +39,43 @@ public class MapExercise {
 
         // TODO: 1 - Map 'people' to extract just their names
         //           Collect to a list and print it
+        List<String> names = people.stream().map(Person::name).toList();
+        System.out.println(names);
 
 
         // TODO: 2 - Map Person objects to PersonDTO objects (dropping the age field)
         //           Collect to a list and print each DTO
+        List<PersonDTO> personDTOS = people.stream().map(p -> new PersonDTO(p.name, p.email)).toList();
+        personDTOS.forEach(System.out::println);
 
 
         // TODO: 3 - Use mapToInt to get the ages of all people
         //           Calculate and print the sum of ages
+        int sumOfAges = people.stream().mapToInt(p -> p.age()).sum();
+        System.out.println(sumOfAges);
 
 
         // TODO: 4 - Use mapToDouble to get all product prices
         //           Calculate and print the sum of prices
+        double sumOfPrices = products.stream().mapToDouble(p -> p.price).sum();
+        System.out.println(sumOfPrices);
+
 
 
         // TODO: 5 - Chain map operations on 'sentences':
         //           First map to lowercase, then map to the first word only (split by space)
         //           Print each result
+        sentences.stream()
+                .map(String::toLowerCase)
+                .map(s -> s.split(" ")[0])
+                .forEach(System.out::println);
 
 
         // TODO: 6 - Use map with a method reference: map 'sentences' to uppercase
         //           using String::toUpperCase
         //           Collect to a list and print it
+        List<String> list = sentences.stream().map(String::toUpperCase).toList();
+        System.out.println(list);
 
     }
 }
