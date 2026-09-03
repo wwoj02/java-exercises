@@ -19,15 +19,38 @@ class AssertThrowsTest {
     //  Store the returned exception in a variable.
 
 
+    @Test
+    void cannotParseStringToInteger() {
+        NumberFormatException exception = assertThrows(
+                NumberFormatException.class,
+                () -> Integer.parseInt("abc"));
+    }
+
+
     // TODO: 2 - Verify the exception message contains expected text.
     //  Using the exception from TODO 1, call getMessage() on it.
     //  Use assertTrue to check the message contains "abc".
     //  Hint: exception.getMessage().contains("abc")
 
+    @Test
+    void shouldContainExpectedMessage() {
+        NumberFormatException exception = assertThrows(
+                NumberFormatException.class,
+                () -> Integer.parseInt("abc"));
+        assertTrue(exception.getMessage().contains("abc"));
+    }
+
 
     // TODO: 3 - Test that dividing by zero throws ArithmeticException.
     //  Use assertThrows to verify that the expression (1 / 0) throws ArithmeticException.
     //  Hint: assertThrows(ArithmeticException.class, () -> { int result = 1 / 0; });
+
+    @Test
+    void shouldThrowAnArithmeticExceptionWhenDividingByZero() {
+        assertThrows(
+                ArithmeticException.class,
+                () -> {int result = 1 / 0; });
+    }
 
 
     // TODO: 4 - Test that a custom exception is thrown.
@@ -37,11 +60,28 @@ class AssertThrowsTest {
     //      throw new IllegalStateException("Invalid state");
     //  });
 
+    @Test
+    void shouldThrowACustomException() {
+        assertThrows(
+                IllegalStateException.class,
+                () -> {throw new IllegalStateException("Invalid state");});
+    }
+
 
     // TODO: 5 - Use assertDoesNotThrow to verify valid input does NOT throw.
     //  Wrap Integer.parseInt("123") in assertDoesNotThrow.
     //  Wrap Integer.parseInt("0") in assertDoesNotThrow.
     //  Hint: assertDoesNotThrow(() -> Integer.parseInt("123"));
+
+    @Test
+    void shouldNotThrowAnException() {
+        assertDoesNotThrow(
+                () -> {
+                    Integer.parseInt("123");
+                    Integer.parseInt("0");
+                }
+        );
+    }
 
 
     // TODO: 6 - Test exception type hierarchy.
@@ -50,4 +90,18 @@ class AssertThrowsTest {
     //  Also verify it can be caught as RuntimeException.
     //  Use assertThrows for each check.
 
+
+    @Test
+    void IntegerParseIntCanBeCaughtAsIllegalArgumentException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> Integer.parseInt("abc"));
+    }
+
+    @Test
+    void IntegerParseIntCanBeCaughtAsRuntimeException() {
+        assertThrows(
+                RuntimeException.class,
+                () -> Integer.parseInt("abc"));
+    }
 }

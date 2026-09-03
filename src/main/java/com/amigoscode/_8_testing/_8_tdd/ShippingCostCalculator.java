@@ -26,7 +26,25 @@ public class ShippingCostCalculator {
      * @throws IllegalArgumentException if weight is negative or destination is null
      */
     public double calculate(double weight, String destination) {
-        // TODO: Students implement this after writing tests first (TDD approach)
-        throw new UnsupportedOperationException("Implement me using TDD!");
+        double perKg = 0.0;
+        double base = 0.0;
+
+        if (destination == null || weight < 0) throw new IllegalArgumentException();
+
+        if (weight == 0) return 0.0;
+
+        if (destination.equals("domestic")) {
+            perKg = weight * 0.50;
+            base = 5.00;
+        }
+
+        if (destination.equals("international")) {
+            perKg = weight * 1.50;
+            base = 15.00;
+        }
+
+        if (weight > 50) base += 25;
+
+        return base + perKg;
     }
 }
