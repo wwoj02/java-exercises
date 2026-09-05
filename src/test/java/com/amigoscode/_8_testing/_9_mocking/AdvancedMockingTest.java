@@ -11,7 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 /**
@@ -39,6 +41,18 @@ class AdvancedMockingTest {
     //      .thenReturn(true, false);
     //  Place the first order -> should succeed (status "COMPLETED").
     //  Place the second order -> should throw RuntimeException (payment fails).
+    @Test
+    void TODO1() {
+        given(paymentService.charge(anyString(), anyDouble())).willReturn(true, false);
+        Order order1 = new Order("ORD-1",  "CUST-1", 5.99);
+        Order order2 = new Order("ORD-2",  "CUST-2", 9.99);
+        var order = orderService.placeOrder(order1);
+
+        assertThat(order.getStatus()).isEqualTo("COMPLETED");
+        assertThrows(
+                RuntimeException.class,
+                () -> orderService.placeOrder(order2));
+    }
 
 
     // TODO: 2 - Use thenAnswer() for custom logic based on arguments.
@@ -50,6 +64,23 @@ class AdvancedMockingTest {
     //      });
     //  Test with amount 100 -> should succeed.
     //  Test with amount 1000 -> should throw RuntimeException.
+    @Test
+    void TODO2() {
+        given(paymentService.charge(anyString(), anyDouble())).willAnswer(
+                invocation -> {
+                    double amount = invocation.getArgument(1);
+                    return amount <= 500.0;
+                });
+
+        Order order1 = new Order("ORD-1", "CUST-1", 100);
+        Order order2 = new Order("ORD-1", "CUST-1", 1000);
+
+        var actual = orderService.placeOrder(order1);
+        assertThat(actual.getStatus()).isEqualTo("COMPLETED");
+        assertThrows(
+                RuntimeException.class,
+                () -> orderService.placeOrder(order2));
+    }
 
 
     // TODO: 3 - Use InOrder to verify the exact sequence of method calls.
@@ -60,6 +91,20 @@ class AdvancedMockingTest {
     //  inOrder.verify(paymentService).charge(anyString(), anyDouble());
     //  inOrder.verify(orderRepository).save(any(Order.class));
     //  inOrder.verifyNoMoreInteractions();
+    @Test
+    void TODO3() {
+        given(paymentService.charge(anyString(), anyDouble())).willReturn(true);
+        Order order = new Order("ORD-1", "CUST-1", 100);
+
+        orderService.placeOrder(order);
+
+        InOrder inOrder = inOrder(paymentService, orderRepository);
+
+        inOrder.verify(paymentService).charge(anyString(), anyDouble());
+        inOrder.verify(orderRepository).save(any(Order.class));
+
+        inOrder.verifyNoMoreInteractions();
+    }
 
 
     // TODO: 4 - Use doNothing().when() for void methods.
@@ -68,6 +113,15 @@ class AdvancedMockingTest {
     //  Stub paymentService.charge to return true.
     //  Place an order and verify save was called.
     //  Note: doNothing() is useful when you want to be explicit or override previous stubbing.
+    @Test
+    void TODO4() {
+        doNothing().when(orderRepository).save(any(Order.class));
+        when(paymentService.charge(anyString(), anyDouble())).thenReturn(true);
+        Order order = new Order("ORD-1", "CUST-1", 100.0);
+        orderService.placeOrder(order);
+
+        verify(orderRepository).save(any(Order.class));
+    }
 
 
     // TODO: 5 - Use doThrow().when() for void methods that should throw.
@@ -76,6 +130,18 @@ class AdvancedMockingTest {
     //      .when(orderRepository).save(any(Order.class));
     //  Stub paymentService.charge to return true.
     //  Assert that placing an order throws RuntimeException with message "Database error".
+    @Test
+    void TODO5() {
+        doThrow(new RuntimeException("Database error")).when(orderRepository).save(any(Order.class));
+        when(paymentService.charge(anyString(), anyDouble())).thenReturn(true);
+        Order order = new Order("ORD-1", "CUST-1", 100.0);
+
+        var exception = assertThrows(
+                RuntimeException.class,
+                () -> orderService.placeOrder(order));
+
+        assertEquals("Database error", exception.getMessage());
+    }
 
 
     // TODO: 6 - Use spy() for partial mocking.
@@ -86,6 +152,18 @@ class AdvancedMockingTest {
     //  Override size(): when(spyList.size()).thenReturn(100);
     //  Assert spyList.size() now returns 100.
     //  Assert spyList.get(0) still returns "item1" (not overridden).
+    @Test
+    void TODO6() {
+        List<String> realList = new java.util.ArrayList<>();
+        List<String> spyList = spy(realList);
+
+        spyList.add("Wojtek");
+        assertEquals(1, spyList.size());
+
+        when(spyList.size()).thenReturn(100);
+        assertEquals(100, spyList.size());
+        assertEquals("Wojtek", spyList.get(0));
+    }
 
 
     // TODO: 7 - Use timeout() for verifying calls with a time limit.
@@ -94,5 +172,14 @@ class AdvancedMockingTest {
     //  Verify with timeout: verify(paymentService, timeout(1000)).charge(anyString(), anyDouble());
     //  This is useful for async operations - it waits up to the timeout for the call.
     //  Note: In this synchronous case it will pass immediately.
+    @Test
+    void TODO7() {
+        given(paymentService.charge(anyString(), anyDouble())).willReturn(true);
+        Order order = new Order("ORD-1", "CUST-1", 100.0);
+
+        orderService.placeOrder(order);
+
+        verify(paymentService, timeout(1000)).charge(anyString(), anyDouble());
+    }
 
 }

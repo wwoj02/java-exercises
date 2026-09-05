@@ -102,6 +102,13 @@ class ProductServiceTest {
     //  Assert that laptop.name() equals "Laptop".
     //  Assert that laptop.price() equals 999.99.
     //  This is a simple sanity check, no mocking needed.
+    @Test
+    void TODO1() {
+        Product laptop = new Product("P-1", "Laptop", 999.99);
+        assertEquals("P-1", laptop.id());
+        assertEquals("Laptop", laptop.name());
+        assertEquals(999.99, laptop.price());
+    }
 
 
     // TODO: 2 - Mock ProductRepository and test findById returns a product.
@@ -110,12 +117,31 @@ class ProductServiceTest {
     //  Call productService.findById("P-2").
     //  Assert the returned product's name is "Phone".
     //  Assert the returned product's price is 699.99.
+    @Test
+    void TODO2() {
+        Product phone = new Product("P-2", "Phone", 699.99);
+        when(productRepository.findById("P-2")).thenReturn(Optional.of(phone));
+
+        var actual = productService.findById("P-2");
+
+        assertEquals("Phone", actual.name());
+        assertEquals(699.99, actual.price());
+    }
 
 
     // TODO: 3 - Test that findById throws when product is not found.
     //  Stub: when(productRepository.findById("MISSING")).thenReturn(Optional.empty());
     //  Assert that productService.findById("MISSING") throws RuntimeException.
     //  Verify the exception message contains "not found".
+    @Test
+    void TODO3() {
+        when(productRepository.findById("MISSING")).thenReturn(Optional.empty());
+        var exception = assertThrows(
+                RuntimeException.class,
+                () -> productService.findById("MISSING"));
+
+        assertTrue(exception.getMessage().contains("not found"));
+    }
 
 
     // TODO: 4 - Test that save calls repository.save().
@@ -123,18 +149,44 @@ class ProductServiceTest {
     //  Call productService.save(product).
     //  Verify: verify(productRepository).save(product);
     //  Also verify: verify(productRepository, times(1)).save(any(Product.class));
+    @Test
+    void TODO4() {
+        Product phone = new Product("P-2", "Phone", 699.99);
+        productService.save(phone);
+
+        verify(productRepository).save(phone);
+        verify(productRepository, times(1)).save(any(Product.class));
+    }
 
 
     // TODO: 5 - Test that save with null throws NullPointerException.
     //  Assert that productService.save(null) throws NullPointerException.
     //  Verify that repository.save was never called:
     //  verify(productRepository, never()).save(any());
+    @Test
+    void TODO5() {
+        assertThrows(
+                NullPointerException.class,
+                () -> productService.save(null));
+
+        verify(productRepository, never()).save(any());
+    }
 
 
     // TODO: 6 - Test that delete throws when product does not exist.
     //  Stub: when(productRepository.existsById("MISSING")).thenReturn(false);
     //  Assert that productService.delete("MISSING") throws RuntimeException.
     //  Verify: verify(productRepository, never()).deleteById(anyString());
+    @Test
+    void TODO6() {
+        when(productRepository.existsById("MISSING")).thenReturn(false);
+
+        assertThrows(
+                RuntimeException.class,
+                () -> productService.delete("MISSING"));
+
+        verify(productRepository, never()).deleteById(anyString());
+    }
 
 
     // TODO: 7 - Test that delete calls repository.deleteById for existing product.
@@ -142,5 +194,13 @@ class ProductServiceTest {
     //  Call productService.delete("P-1").
     //  Verify: verify(productRepository).existsById("P-1");
     //  Verify: verify(productRepository).deleteById("P-1");
+    @Test
+    void TODO7() {
+        when(productRepository.existsById("P-1")).thenReturn(true);
+        productService.delete("P-1");
+
+        verify(productRepository).existsById("P-1");
+        verify(productRepository).deleteById("P-1");
+    }
 
 }
